@@ -6,13 +6,14 @@ function M.swap()
     local cwd = vim.fn.getcwd()
     if cwd == _G.swap_paths[1] then
         vim.cmd("cd " .. _G.swap_paths[2])
-        print("swapped 2")
+        print("swapped to: " .. vim.fn.getcwd())
     elseif cwd == _G.swap_paths[2] then
         vim.cmd("cd " .. _G.swap_paths[1])
-        print("swapped 1")
+        print("swapped to: " .. vim.fn.getcwd())
+    else
+        print("Current directory not in swap paths")
     end
 end
-
 M.setup = function()
 end
 
