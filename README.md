@@ -28,8 +28,8 @@ local motorbike = require("motorbike")
 -- Set directories manually (example)
     vim.keymap.set("n", "<leader>sm", function()
             motorbike.set_directories(
-                "/Users/zacharywillis/motorbike/",
-                "/Users/zacharywillis/.config/nvim/"
+                "/desired/file/path/1/",
+                "/desired/file/path/2/"
                 )
             end, { desc = "Set motorbike directories" })
 ```
