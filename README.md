@@ -35,7 +35,10 @@ local motorbike = require("motorbike")
 ```
 Then, to swap between folders, run
 ```
-:lua require("motorbike").swap()
+<leader>sd
 ```
-Now your pwd in neovim is the swapped folder
-
+Now your pwd in neovim is the swapped folder (I often open telescope)
+You can also reconfig the paths for this nvim instance:
+```
+<leader>sm
+```
