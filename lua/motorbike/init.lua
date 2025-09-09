@@ -1,6 +1,10 @@
 local M = {}
 _G.swap_paths = _G.swap_paths or { "", "" }
 
+local function normalize(path)
+    return vim.fn.fnamemodify(path, ":p"):gsub("/$", "")
+end
+
 function M.set_directories(dir1, dir2)
     _G.swap_paths[1] = vim.fn.fnamemodify(dir1, ":p")
     _G.swap_paths[2] = vim.fn.fnamemodify(dir2, ":p")
@@ -8,9 +12,9 @@ function M.set_directories(dir1, dir2)
 end
 
 function M.swap()
-    local cwd = vim.fn.getcwd()
-    local dir1 = vim.fn.fnamemodify(_G.swap_paths[1], ":p")
-    local dir2 = vim.fn.fnamemodify(_G.swap_paths[2], ":p")
+    local cwd = normalize(vim.fn.getcwd())
+    local dir1 = normalize(_G.swap_paths[1])
+    local dir2 = normalize(_G.swap_paths[2])
 
     print("cwd: ", cwd)
     print("dir1:", dir1)
