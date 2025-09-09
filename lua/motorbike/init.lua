@@ -1,45 +1,51 @@
 local M = {}
 _G.swap_paths = _G.swap_paths or { "", "" }
 
-local function normalize(path)
-    return vim.fn.fnamemodify(path, ":p"):gsub("/$", "")
+-- Setup function with optional netrw auto-open
+M.setup = function(opts)
+    opts = opts or {}
+    M.open_explorer = opts.open_explorer or false
 end
 
+-- Set the two directories to swap between
 function M.set_directories(dir1, dir2)
-    _G.swap_paths[1] = vim.fn.fnamemodify(dir1, ":p")
-    _G.swap_paths[2] = vim.fn.fnamemodify(dir2, ":p")
-    print("Directories set: " .. _G.swap_paths[1] .. " and " .. _G.swap_paths[2])
+    _G.swap_paths[1] = dir1
+    _G.swap_paths[2] = dir2
+    print("Directories set: " .. dir1 .. " and " .. dir2)
 end
 
+-- Swap the current working directory
 function M.swap()
-    local cwd = normalize(vim.fn.getcwd())
-    local dir1 = normalize(_G.swap_paths[1])
-    local dir2 = normalize(_G.swap_paths[2])
+    local cwd = vim.fn.getcwd()
+    local new_dir = nil
 
-    print("cwd: ", cwd)
-    print("dir1:", dir1)
-    print("dir2:", dir2)
-
-    if cwd == dir1 then
-        vim.cmd("cd " .. dir2)
-        print("Swapped to: " .. vim.fn.getcwd())
-    elseif cwd == dir2 then
-        vim.cmd("cd " .. dir1)
-        print("Swapped to: " .. vim.fn.getcwd())
+    if cwd == _G.swap_paths[1] then
+        new_dir = _G.swap_paths[2]
+    elseif cwd == _G.swap_paths[2] then
+        new_dir = _G.swap_paths[1]
     else
-        print("Current directory not in swap paths")
+        print("Current directory is not in swap paths!")
+        return
+    end
+
+    -- Change working directory
+    vim.cmd("cd " .. new_dir)
+    print("Swapped to " .. new_dir)
+
+    -- Refresh netrw if desired
+    if M.open_explorer then
+        -- Close any existing netrw buffers
+        for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+            if vim.api.nvim_buf_get_option(buf, "filetype") == "netrw" then
+                vim.api.nvim_buf_delete(buf, { force = true })
+            end
+        end
+
+        -- Open netrw in new directory
+        vim.cmd("edit " .. new_dir)
+        vim.cmd("Ex")
     end
 end
 
-for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-    if vim.api.nvim_buf_get_option(buf, "filetype") == "netrw" then
-        vim.api.nvim_buf_delete(buf, { force = true })
-    end
-end
-vim.cmd("edit " .. cwd)
-vim.cmd("Ex")
-
-M.setup = function()
-end
 return M
 
