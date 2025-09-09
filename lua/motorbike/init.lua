@@ -1,47 +1,37 @@
 local M = {}
 _G.swap_paths = _G.swap_paths or { "", "" }
 
-M.setup = function(opts)
-    opts = opts or {}
-    M.open_explorer = opts.open_explorer or false
+local function normalize(path)
+    return vim.fn.fnamemodify(path, ":p"):gsub("/$", "")
 end
 
 function M.set_directories(dir1, dir2)
-    _G.swap_paths[1] = dir1
-    _G.swap_paths[2] = dir2
-    print("Directories set: " .. dir1 .. " and " .. dir2)
+    _G.swap_paths[1] = vim.fn.fnamemodify(dir1, ":p")
+    _G.swap_paths[2] = vim.fn.fnamemodify(dir2, ":p")
+    print("Directories set: " .. _G.swap_paths[1] .. " and " .. _G.swap_paths[2])
 end
 
 function M.swap()
-    local cwd = vim.fn.getcwd()
-    local new_dir = nil
+    local cwd = normalize(vim.fn.getcwd())
+    local dir1 = normalize(_G.swap_paths[1])
+    local dir2 = normalize(_G.swap_paths[2])
 
-    if cwd == _G.swap_paths[1] then
-        new_dir = _G.swap_paths[2]
-    elseif cwd == _G.swap_paths[2] then
-        new_dir = _G.swap_paths[1]
+    print("cwd: ", cwd)
+    print("dir1:", dir1)
+    print("dir2:", dir2)
+
+    if cwd == dir1 then
+        vim.cmd("cd " .. dir2)
+        print("Swapped to: " .. vim.fn.getcwd())
+    elseif cwd == dir2 then
+        vim.cmd("cd " .. dir1)
+        print("Swapped to: " .. vim.fn.getcwd())
     else
-        print("Current directory is not in swap paths!")
-        return
-    end
-
-    -- Change working directory
-    vim.cmd("cd " .. new_dir)
-    print("Swapped to " .. new_dir)
-
-    -- Refresh netrw if desired
-    if M.open_explorer then
-        -- Close any existing netrw buffers
-        for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-            if vim.api.nvim_buf_get_option(buf, "filetype") == "netrw" then
-                vim.api.nvim_buf_delete(buf, { force = true })
-            end
-        end
-
-        -- Open netrw in current cwd
-        vim.cmd("Ex")
+        print("Current directory not in swap paths")
     end
 end
 
+M.setup = function()
+end
 return M
 
