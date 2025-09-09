@@ -8,7 +8,6 @@ end
 function M.set_directories(dir1, dir2)
     _G.swap_paths[1] = vim.fn.fnamemodify(dir1, ":p")
     _G.swap_paths[2] = vim.fn.fnamemodify(dir2, ":p")
-    print("Directories set: " .. _G.swap_paths[1] .. " and " .. _G.swap_paths[2])
 end
 
 function M.swap()
