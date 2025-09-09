@@ -12,6 +12,10 @@ function M.swap()
     local dir1 = vim.fn.fnamemodify(_G.swap_paths[1], ":p")
     local dir2 = vim.fn.fnamemodify(_G.swap_paths[2], ":p")
 
+    print("cwd: ", cwd)
+    print("dir1:", dir1)
+    print("dir2:", dir2)
+
     if cwd == dir1 then
         vim.cmd("cd " .. dir2)
         print("Swapped to: " .. vim.fn.getcwd())
