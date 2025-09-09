@@ -31,6 +31,14 @@ function M.swap()
     end
 end
 
+for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+    if vim.api.nvim_buf_get_option(buf, "filetype") == "netrw" then
+        vim.api.nvim_buf_delete(buf, { force = true })
+    end
+end
+vim.cmd("edit " .. cwd)
+vim.cmd("Ex")
+
 M.setup = function()
 end
 return M
