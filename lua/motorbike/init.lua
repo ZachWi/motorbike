@@ -26,8 +26,12 @@ function M.swap()
         vim.cmd("cd " .. dir1)
         print("Swapped to: " .. vim.fn.getcwd())
     else
-        local input = vim.fn.input("Enter the dir you want to go: ")
-        vim.cmd("cd " .. normalize(_G.swap_paths[string.byte(input)]))
+        local choice = tonumber(input)
+        if choice and _G.swap_paths[choice] then
+            vim.cmd("cd " .. normalize(_G.swap_paths[choice]))
+        else
+            print("Invalid choice: " .. input)
+        end
     end
 end
 
