@@ -1,6 +1,6 @@
 # motorbike
 
-- a really basic harpoon clone, but for folders this time
+- a really basic harpoon clone, but for directories this time
 
 Usage (packer):
 ```lua
