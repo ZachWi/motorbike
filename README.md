@@ -8,7 +8,6 @@ Usage (packer):
         "ZachWi/motorbike",
         config = function()
             local motorbike = require("motorbike")
-            motorbike.setup({})  -- optional
             motorbike.set_directories(
                 "/desired/file/path/1/",
                 "/desired/file/path/2/"
