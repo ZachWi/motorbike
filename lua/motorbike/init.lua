@@ -6,18 +6,18 @@ local function normalize(path)
 end
 
 function M.set_directories(dir1, dir2)
-    _G.swap_paths[1] = vim.fn.fnamemodify(dir1, ":p")
-    _G.swap_paths[2] = vim.fn.fnamemodify(dir2, ":p")
+    _G.swap_paths[1] = normalize(dir1)
+    _G.swap_paths[2] = normalize(dir2)
 end
 
 function M.swap()
     local cwd = normalize(vim.fn.getcwd())
-    local dir1 = normalize(_G.swap_paths[1])
-    local dir2 = normalize(_G.swap_paths[2])
+    local dir1 = _G.swap_paths[1]
+    local dir2 = _G.swap_paths[2]
 
-    print("cwd: ", cwd)
-    print("dir1:", dir1)
-    print("dir2:", dir2)
+    print("cwd: " .. cwd)
+    print("dir1: " .. dir1)
+    print("dir2: " .. dir2)
 
     if cwd == dir1 then
         vim.cmd("cd " .. dir2)
@@ -26,9 +26,11 @@ function M.swap()
         vim.cmd("cd " .. dir1)
         print("Swapped to: " .. vim.fn.getcwd())
     else
+        local input = vim.fn.input("Enter 1 or 2 to choose directory: ")
         local choice = tonumber(input)
         if choice and _G.swap_paths[choice] then
-            vim.cmd("cd " .. normalize(_G.swap_paths[choice]))
+            vim.cmd("cd " .. _G.swap_paths[choice])
+            print("Swapped to: " .. vim.fn.getcwd())
         else
             print("Invalid choice: " .. input)
         end
