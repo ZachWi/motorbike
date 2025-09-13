@@ -26,11 +26,9 @@ function M.swap()
         vim.cmd("cd " .. dir1)
         print("Swapped to: " .. vim.fn.getcwd())
     else
-        print("Current directory not in swap paths")
+        print("Not currently in a swappable directory")
     end
 end
 
-M.setup = function()
-end
 return M
 
