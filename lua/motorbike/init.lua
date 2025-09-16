@@ -37,4 +37,9 @@ function M.swap()
     end
 end
 
+function M.list()
+    for i = 1, _G.swap_paths do
+        print(_G.swap_paths[i])
+    end
+end
 return M
