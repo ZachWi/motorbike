@@ -19,18 +19,11 @@ Now make motorbike.lua in your .config/nvim/after/plugin directory
 ```lua
 local motorbike = require("motorbike")
 
--- Swap directories
-    vim.keymap.set("n", "<leader>sd", function()
-            motorbike.swap()
-            end, { desc = "Swap motorbike directories" })
-
--- Set directories manually (example)
-    vim.keymap.set("n", "<leader>sm", function()
-            motorbike.set_directories(
+    vim.keymap.set("n", "<leader>sd", function() motorbike.swap() end)
+    vim.keymap.set("n", "<leader>sm", function() motorbike.set_directories(
                 "/desired/file/path/1/",
                 "/desired/file/path/2/"
-                )
-            end, { desc = "Set motorbike directories" })
+                ) end)
 ```
 Then, to swap between folders, run
 ```
